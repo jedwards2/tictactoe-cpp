@@ -1,14 +1,96 @@
-//
-//  main.cpp
-//  tictactoe
-//
-//  Created by Jack Edwards on 10/11/22.
-//
-
+#include <array>
 #include <iostream>
+#include <iterator>
+
+constexpr int BOARD_SIZE {3};
+
+void printBoard(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
+void setBoard(std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, std::array<int, 2>& guessArray, int currentPlayer);
+std::array<int, 2> getGuessArray();
+int getIndividualGuess();
+int switchPlayer(int currentPlayer);
+bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, bool gameWon);
 
 int main(int argc, const char * argv[]) {
-  // insert code here...
-  std::cout << "Hello, World!\n";
+  //build initial multidimensional board array
+  std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE> board {};
+  
+  bool gameWon {false};
+  int currentPlayer{0};
+  
+  //set all squares to _
+  for (int i{0}; i<board.size(); i++){
+    for (int q{0}; q<board.size(); q++){
+      board[i][q] = '_';
+    }
+  }
+  
+  //print initial board state
+  printBoard(board);
+  
+  while (!gameWon){
+    printBoard(board);
+    std::cout << "Current State of the Board" << "\n";
+    std::array<int, 2> guess {getGuessArray()};
+    setBoard(board, guess, currentPlayer);
+    gameWon = checkIfWon(board, gameWon);
+    currentPlayer = switchPlayer(currentPlayer);
+  }
+  
   return 0;
+}
+
+int getIndividualGuess(){
+  int guess {};
+  std::cout << "Please Input an Integer: ";
+  std::cin >> guess;
+  return guess;
+}
+
+std::array<int, 2> getGuessArray(){
+  int guess1{ getIndividualGuess()};
+  int guess2{ getIndividualGuess()};
+  return std::array<int, 2>{ guess1, guess2};
+}
+
+void printBoard(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board){
+  for (int i{0}; i<board.size(); i++){
+    for (int q{0}; q<board.size(); q++){
+      std::cout << board[i][q] << " ";
+    }
+    std::cout << "\n";
+  }
+}
+
+void setBoard(std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, std::array<int, 2>& guessArray, int currentPlayer){
+  if (currentPlayer){
+    board[guessArray[0]][guessArray[1]] = 'O';
+  } else {
+    board[guessArray[0]][guessArray[1]] = 'X';
+  }
+}
+
+int switchPlayer(int currentPlayer){
+  return currentPlayer ? 0 : 1;
+}
+
+bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, bool gameWon){
+  if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] == board[0][2] && board[0][0] != '_'){
+    return true;
+  } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] == board[1][2] && board[1][0] != '_'){
+    return true;
+  } else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] == board[2][2] && board[2][0] != '_'){
+    return true;
+  } else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] == board[2][0] && board[0][0] != '_'){
+    return true;
+  } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] == board[1][2] && board[1][0] != '_'){
+    return true;
+  } else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] == board[2][2] && board[2][0] != '_'){
+    return true;
+  } else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] == board[2][2] && board[0][0] != '_'){
+    return true;
+  } else if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] == board[0][2] && board[2][0] != '_'){
+    return true;
+  }
+  return false;
 }
