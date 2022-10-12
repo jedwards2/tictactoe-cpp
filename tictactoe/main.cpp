@@ -25,15 +25,20 @@ int main(int argc, const char * argv[]) {
     }
   }
   
-  //print initial board state
-  printBoard(board);
-  
   while (!gameWon){
     printBoard(board);
     std::cout << "Current State of the Board" << "\n";
+    
+    //get array of 2 integers from player
     std::array<int, 2> guess {getGuessArray()};
+    
+    //update the board with currentPlayer's mark
     setBoard(board, guess, currentPlayer);
+    
+    //update current state of game
     gameWon = checkIfWon(board, gameWon);
+    
+    //update the current Player
     currentPlayer = switchPlayer(currentPlayer);
   }
   
