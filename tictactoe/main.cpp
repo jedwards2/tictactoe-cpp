@@ -1,4 +1,5 @@
 #include <array>
+#include <vector>
 #include <iostream>
 #include <iterator>
 
@@ -8,7 +9,7 @@ constexpr int BOARD_SIZE {2};
 //forward declarations ------------------------------------------------
 void printBoard(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
 void setBoard(std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, std::array<int, 2>& guessArray, int currentPlayer);
-std::array<int, 2> getGuessArray();
+std::array<int, 2> getGuessArray(std::vector<std::array<int, 2>>& prevGuesses);
 int getIndividualGuess();
 int switchPlayer(int currentPlayer);
 bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, bool gameWon);
@@ -16,11 +17,15 @@ bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& boa
 bool checkRow(const std::array<char, BOARD_SIZE>& row);
 bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
 bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
-void congratulatePlayer(int currentPlayer);
+void congratulateWinner(int currentPlayer);
+bool checkIfGuessIsValid(int guess1, int guess2, std::vector<std::array<int, 2>>& prevGuesses);
 
 int main(int argc, const char * argv[]) {
-  //build initial multidimensional board array
+  //initial multidimensional board array
   std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE> board {};
+  
+  //array of 2 ints for previous guesses
+  std::vector<std::array<int, 2>> prevGuesses;
   
   bool gameWon {false};
   int currentPlayer{0};
@@ -37,7 +42,8 @@ int main(int argc, const char * argv[]) {
     std::cout << "Current State of the Board" << "\n";
     
     //get array of 2 integers from player
-    std::array<int, 2> guess {getGuessArray()};
+    std::array<int, 2> guess {getGuessArray(prevGuesses)};
+    prevGuesses.push_back(guess);
     
     //update the board with currentPlayer's mark
     setBoard(board, guess, currentPlayer);
@@ -48,7 +54,8 @@ int main(int argc, const char * argv[]) {
     //update the current Player
     currentPlayer = switchPlayer(currentPlayer);
   }
-  congratulatePlayer(currentPlayer);
+  
+  congratulateWinner(currentPlayer);
   return 0;
 }
 
@@ -64,9 +71,23 @@ int getIndividualGuess(){
   return guess;
 }
 
-std::array<int, 2> getGuessArray(){
+bool checkIfGuessIsValid(int guess1, int guess2, std::vector<std::array<int, 2>>& prevGuesses){
+  for (int i{0}; i<prevGuesses.size(); i++){
+    if (prevGuesses[i][0] == guess1 && prevGuesses[i][1] == guess2){
+      return false;
+    }
+  }
+  return true;
+}
+
+std::array<int, 2> getGuessArray(std::vector<std::array<int, 2>>& prevGuesses){
   int guess1{ getIndividualGuess()};
   int guess2{ getIndividualGuess()};
+  while (!checkIfGuessIsValid(guess1, guess2, prevGuesses)){
+    guess1 = getIndividualGuess();
+    guess2 = getIndividualGuess();
+  }
+
   return std::array<int, 2>{ guess1, guess2};
 }
 
@@ -152,7 +173,7 @@ bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZ
   return true;
 }
 
-void congratulatePlayer(int currentPlayer){
+void congratulateWinner(int currentPlayer){
   std::string_view message {currentPlayer ? "Congratulations X" : "Congratulations O"};
   std::cout << message << "\n";
 }
