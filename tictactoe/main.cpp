@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iterator>
 
+//set compile-time const for board size, does not work due to check conditions
 constexpr int BOARD_SIZE {3};
 
 void printBoard(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
@@ -18,7 +19,7 @@ int main(int argc, const char * argv[]) {
   bool gameWon {false};
   int currentPlayer{0};
   
-  //set all squares to _
+  //set all squares to _ state
   for (int i{0}; i<board.size(); i++){
     for (int q{0}; q<board.size(); q++){
       board[i][q] = '_';
@@ -80,6 +81,7 @@ int switchPlayer(int currentPlayer){
 }
 
 bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, bool gameWon){
+  //checks all rows and columns, making sure they are equal, and not "_"
   if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] == board[0][2] && board[0][0] != '_'){
     return true;
   } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] == board[1][2] && board[1][0] != '_'){
