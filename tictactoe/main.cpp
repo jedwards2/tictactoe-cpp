@@ -3,7 +3,7 @@
 #include <iterator>
 
 //set compile-time const for board size, does not work due to check conditions
-constexpr int BOARD_SIZE {3};
+constexpr int BOARD_SIZE {2};
 
 //forward declarations ------------------------------------------------
 void printBoard(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
@@ -16,6 +16,7 @@ bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& boa
 bool checkRow(const std::array<char, BOARD_SIZE>& row);
 bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
 bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
+void congratulatePlayer(int currentPlayer);
 
 int main(int argc, const char * argv[]) {
   //build initial multidimensional board array
@@ -47,7 +48,7 @@ int main(int argc, const char * argv[]) {
     //update the current Player
     currentPlayer = switchPlayer(currentPlayer);
   }
-  
+  congratulatePlayer(currentPlayer);
   return 0;
 }
 
@@ -100,7 +101,7 @@ bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& boar
 }
 
 bool checkRow(const std::array<char, BOARD_SIZE>& row){
-  char check{row[0]};
+  const char check{row[0]};
   if (check == '_'){
     return false;
   }
@@ -113,7 +114,7 @@ bool checkRow(const std::array<char, BOARD_SIZE>& row){
 }
 
 bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, int colNum){
-  char check{board[colNum][0]};
+  const char check{board[colNum][0]};
   if (check == '_'){
     return false;
   }
@@ -126,7 +127,7 @@ bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& boa
 }
 
 bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board){
-  char check{board[0][0]};
+  const char check{board[0][0]};
   if (check == '_'){
     return false;
   }
@@ -139,7 +140,7 @@ bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE
 }
 
 bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board){
-  char check { board[board.size() - 1][0] };
+  const char check { board[board.size() - 1][0] };
   if (check == '_'){
     return false;
   }
@@ -149,4 +150,9 @@ bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZ
     }
   }
   return true;
+}
+
+void congratulatePlayer(int currentPlayer){
+  std::string_view message {currentPlayer ? "Congratulations X" : "Congratulations O"};
+  std::cout << message << "\n";
 }
