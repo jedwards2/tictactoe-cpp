@@ -5,12 +5,17 @@
 //set compile-time const for board size, does not work due to check conditions
 constexpr int BOARD_SIZE {3};
 
+//forward declarations ------------------------------------------------
 void printBoard(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
 void setBoard(std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, std::array<int, 2>& guessArray, int currentPlayer);
 std::array<int, 2> getGuessArray();
 int getIndividualGuess();
 int switchPlayer(int currentPlayer);
 bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, bool gameWon);
+bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, int colNum);
+bool checkRow(const std::array<char, BOARD_SIZE>& row);
+bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
+bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
 
 int main(int argc, const char * argv[]) {
   //build initial multidimensional board array
@@ -47,9 +52,14 @@ int main(int argc, const char * argv[]) {
 }
 
 int getIndividualGuess(){
-  int guess {};
-  std::cout << "Please Input an Integer: ";
-  std::cin >> guess;
+  int guess {-1};
+  
+  //check that guess is within board size
+  while (guess > BOARD_SIZE || guess < 0){
+    std::cout << "Please Input an Integer: ";
+    std::cin >> guess;
+  }
+  
   return guess;
 }
 
@@ -81,23 +91,62 @@ int switchPlayer(int currentPlayer){
 }
 
 bool checkIfWon(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, bool gameWon){
-  //checks all rows and columns, making sure they are equal, and not "_"
-  if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] == board[0][2] && board[0][0] != '_'){
-    return true;
-  } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] == board[1][2] && board[1][0] != '_'){
-    return true;
-  } else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] == board[2][2] && board[2][0] != '_'){
-    return true;
-  } else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] == board[2][0] && board[0][0] != '_'){
-    return true;
-  } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] == board[1][2] && board[1][0] != '_'){
-    return true;
-  } else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] == board[2][2] && board[2][0] != '_'){
-    return true;
-  } else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] == board[2][2] && board[0][0] != '_'){
-    return true;
-  } else if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] == board[0][2] && board[2][0] != '_'){
-    return true;
+  for (int i{0}; i<BOARD_SIZE; i++){
+    if (checkRow(board[i]) || checkColumn(board, i) || checkLeftDiagonal(board) || checkRightDiagonal(board)){
+      return true;
+    }
   }
   return false;
+}
+
+bool checkRow(const std::array<char, BOARD_SIZE>& row){
+  char check{row[0]};
+  if (check == '_'){
+    return false;
+  }
+  for (int i{0}; i<row.size(); i++){
+    if (row[i] != check){
+      return false;
+    }
+  }
+  return true;
+}
+
+bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board, int colNum){
+  char check{board[colNum][0]};
+  if (check == '_'){
+    return false;
+  }
+  for (int i{0}; i<board.size(); i++){
+    if (board[i][colNum] != check){
+      return false;
+    }
+  }
+  return true;
+}
+
+bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board){
+  char check{board[0][0]};
+  if (check == '_'){
+    return false;
+  }
+  for (int i{0}; i<board.size(); i++){
+    if (board[i][i] != check){
+      return false;
+    }
+  }
+  return true;
+}
+
+bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board){
+  char check { board[board.size() - 1][0] };
+  if (check == '_'){
+    return false;
+  }
+  for (int i{0}; i<board.size(); i++){
+    if (board[(board.size() - 1) - i][i] != check){
+      return false;
+    }
+  }
+  return true;
 }
