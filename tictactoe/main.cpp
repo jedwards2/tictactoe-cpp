@@ -17,7 +17,6 @@ bool checkColumn(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& boa
 bool checkRow(const std::array<char, BOARD_SIZE>& row);
 bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
 bool checkLeftDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>& board);
-void congratulateWinner(int currentPlayer);
 bool checkIfGuessIsValid(int guess1, int guess2, std::vector<std::array<int, 2>>& prevGuesses);
 
 int main(int argc, const char * argv[]) {
@@ -55,7 +54,9 @@ int main(int argc, const char * argv[]) {
     currentPlayer = switchPlayer(currentPlayer);
   }
   
-  congratulateWinner(currentPlayer);
+  //congratulate winner
+  std::string_view message {currentPlayer ? "Congratulations X" : "Congratulations O"};
+  std::cout << message << "\n";
   return 0;
 }
 
@@ -171,9 +172,4 @@ bool checkRightDiagonal(const std::array<std::array<char, BOARD_SIZE>, BOARD_SIZ
     }
   }
   return true;
-}
-
-void congratulateWinner(int currentPlayer){
-  std::string_view message {currentPlayer ? "Congratulations X" : "Congratulations O"};
-  std::cout << message << "\n";
 }
