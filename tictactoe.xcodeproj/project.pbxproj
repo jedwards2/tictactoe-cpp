@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0477398D28F6109F00958A5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0477398C28F6109F00958A5B /* main.cpp */; };
+		04CA84A42901DB5A00CE3F37 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CA84A32901DB5A00CE3F37 /* Board.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		0477398928F6109F00958A5B /* tictactoe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tictactoe; sourceTree = BUILT_PRODUCTS_DIR; };
 		0477398C28F6109F00958A5B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		04CA84A32901DB5A00CE3F37 /* Board.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
+		04FC5D162901E23F00D0BFFF /* Board.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Board.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				0477398C28F6109F00958A5B /* main.cpp */,
+				04CA84A32901DB5A00CE3F37 /* Board.cpp */,
+				04FC5D162901E23F00D0BFFF /* Board.hpp */,
 			);
 			path = tictactoe;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04CA84A42901DB5A00CE3F37 /* Board.cpp in Sources */,
 				0477398D28F6109F00958A5B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
