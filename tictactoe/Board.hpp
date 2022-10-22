@@ -12,7 +12,7 @@ class Board
     std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE> m_board {};
     bool gameWon {false};
   public:
-    Board();  
+    Board();
     void printBoard();
     void setBoard(std::array<int, 2>& guessArray, int currentPlayer);
     void checkIfWon();

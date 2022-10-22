@@ -26,7 +26,6 @@ void Board::setBoard(std::array<int, 2>& guessArray, int currentPlayer){
   }
 }
 
-
 bool Board::checkRow(const std::array<char, BOARD_SIZE>& row){
   const char check{row[0]};
   if (check == '_'){
