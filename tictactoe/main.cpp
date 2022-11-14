@@ -10,14 +10,12 @@ bool checkIfGuessIsValid(int guess1, int guess2, std::vector<std::array<int, 2>>
 
 int main(int argc, const char * argv[]) {
   //initial multidimensional board array
-
   //array of 2 ints for previous guesses
   std::vector<std::array<int, 2>> prevGuesses;
   
   Board gameBoard {};
   int currentPlayer{0};
 
-  
   while (!gameBoard.isGameWon()){
     gameBoard.printBoard();
 
